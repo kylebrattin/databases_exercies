@@ -74,7 +74,7 @@ SELECT
         WHEN d.dept_name IN ('Finance', 'Human Resources') THEN 'Finance & HR'
         ELSE d.dept_name
     END AS merged_dep,
-    AVG(s.salary) AS avg_salary
+    ROUND (AVG(s.salary),2) AS avg_salary
 FROM departments d
     JOIN dept_emp de ON d.dept_no = de.dept_no
     JOIN salaries s ON de.emp_no = s.emp_no
@@ -90,31 +90,7 @@ GROUP BY merged_dep;
 -- Finance & HR 71.1k
 -- Customer Service 67.2k
 
-
--- BONUS
--- Remove duplicate employees from exercise 1.
-
-SELECT 
-	de.emp_no,
-    e.first_name,
-    e.last_name,
-    de.dept_no,
-    de.from_date as start_date,
-    de.to_date as end_date,
-    IF (de.to_date= '9999-01-01',True,False) as is_current_employee
-FROM ( 
-	SELECT
-		emp_no,
-        dept_no,
-        MAX(from_date) AS From_date,
-        MAX(to_date) AS To_date
-	FROM dept_emp
-	GROUP BY
-		emp_no,
-		dept_no
-    ) de
-    JOIN employees e ON de.emp_no = e.emp_no
-   ;
+	
 
         
         
